@@ -217,8 +217,8 @@ namespace {
 
 		int windowCount = Kore::System::windowCount();
 
-		for (int windowIndex = 0; windowIndex < windowCount; ++windowIndex) {
-			if (visible) {
+		if (visible) {
+            for (int windowIndex = 0; windowIndex < windowCount; ++windowIndex) {
 				#ifndef VR_RIFT
 				Kore::Graphics::begin(windowIndex);
                 #endif
@@ -229,20 +229,49 @@ namespace {
 				#endif
 
                 SystemImpl_obj::frame(windowIndex);
-
-				#ifndef VR_RIFT
-                Kore::Graphics::end(windowIndex);
-				#endif
 			
 				// Google Cardboard: Call the DistortionMesh Renderer
 				#ifdef VR_CARDBOARD
 				//	Kore::VrInterface::DistortionAfter();
 				#endif
 
+//#ifndef VR_RIFT
+//				if (windowIndex == 0) {
+//					Kore::Graphics::disableSwapControl(windowIndex);
+//					//Kore::Graphics::enableSwapControl(0);
+//					Kore::Graphics::swapBuffers(0);
+//				} else {
+//					Kore::Graphics::disableSwapControl(windowIndex);
+//					Kore::Graphics::swapBuffers(windowIndex);
+//				}
+//#endif
+
 				#ifndef VR_RIFT
-				Kore::Graphics::swapBuffers(windowIndex);
+                Kore::Graphics::end(windowIndex);
 				#endif
 			}
+            
+#ifndef VR_RIFT
+//            Kore::Graphics::enableSwapControl(0);
+   //         Kore::Graphics::disableSwapControl(0);
+   //         for (int windowIndex = 1; windowIndex < windowCount; ++windowIndex) {
+			//	Kore::Graphics::disableSwapControl(windowIndex);
+			//}
+
+            //Kore::Graphics::disableSwapControl(0);
+			//Kore::Graphics::swapBuffers(0);
+            
+#if defined(SYS_WINDOWS)
+			//::wait
+#endif
+
+            for (int windowIndex = 0; windowIndex < windowCount; ++windowIndex) {
+				//Kore::Graphics::begin(windowIndex);
+                Kore::Graphics::swapBuffers(windowIndex);
+				//Kore::Graphics::end(windowIndex);
+            }
+#endif
+            
 		}
 	}
 	

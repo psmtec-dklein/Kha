@@ -48,4 +48,5 @@ class WindowOptions {
 
 	@:optional public var rendererOptions: RendererOptions;
 	@:optional public var windowedModeOptions: WindowedModeOptions;
+    @:optional public var swapControl: SwapControl; // TODO (DK) only used for main window?
 }

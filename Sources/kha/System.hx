@@ -6,7 +6,8 @@ typedef SystemOptions = {
 	?title: String,
 	?width: Int,
 	?height: Int,
-	?samplesPerPixel: Int
+	?samplesPerPixel: Int,
+    ?swapControl: SwapControl,
 }
 
 @:allow(kha.SystemImpl)
@@ -23,6 +24,7 @@ class System {
 		if (options.width == null) options.width = 800;
 		if (options.height == null) options.height = 600;
 		if (options.samplesPerPixel == null) options.samplesPerPixel = 1;
+        if (options.swapControl == null) options.swapControl = SwapControl.Vsync;
 		SystemImpl.init(options, callback);
 	}
 
@@ -106,6 +108,7 @@ class System {
 		return SystemImpl.getScreenRotation();
 	}
 
+    // TODO (DK) change and use SwapControl?
 	public static var vsync(get, null): Bool;
 
 	private static function get_vsync(): Bool {

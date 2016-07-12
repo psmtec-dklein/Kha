@@ -549,6 +549,19 @@ class SystemImpl {
 		}
 	}
 
+    static function translateSwapControl(value: Null<SwapControl> ): Int {
+        if (value == null) {
+            return 1;
+        }
+        
+        return switch (value) {
+            case SwapControl.NoVsync: 0;
+            case SwapControl.Vsync: 1;
+            case SwapControl.AdaptiveVsync: -1;
+            case SwapControl.VsyncInterval(interval): interval;
+        }
+    }
+    
 	private static function initWindow(options: WindowOptions, callback: Int -> Void) {
 		// TODO (DK) find a better way to call the cpp code
 		var x = translatePosition(options.x);
@@ -565,6 +578,7 @@ class SystemImpl {
 		var resizable = options.windowedModeOptions != null ? options.windowedModeOptions.resizable : false;
 		var maximizable = options.windowedModeOptions != null ? options.windowedModeOptions.maximizable : false;
 		var minimizable = options.windowedModeOptions != null ? options.windowedModeOptions.minimizable : true;
+        var swapControl = translateSwapControl(options.swapControl);
 
 		untyped __cpp__('
 			Kore::WindowOptions wo;
@@ -578,6 +592,7 @@ class SystemImpl {
 			wo.rendererOptions.textureFormat = textureFormat;
 			wo.rendererOptions.depthBufferBits = depthBufferBits;
 			wo.rendererOptions.stencilBufferBits = stencilBufferBits;
+            wo.swapControl = swapControl;
 
 			wo.resizable = resizable;
 			wo.maximizable = maximizable;
